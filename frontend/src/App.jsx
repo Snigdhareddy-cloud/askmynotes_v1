@@ -31,7 +31,11 @@ function App() {
     setAnswer("");
 
     try {
+<<<<<<< HEAD
       const response = await fetch("https://askmynotes-v1-backend.onrender.com", {
+=======
+      const response = await fetch("https://askmynotes-v1-vgeu.onrender.com/ask", {
+>>>>>>> 7c5014b4ee9e8bd11022a14f684314b65ef06c66
         method: "POST",
         headers: {
           "Content-Type": "application/json",
