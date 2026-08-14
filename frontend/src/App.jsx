@@ -3,9 +3,19 @@ import "./App.css";
 
 function App() {
   const [question, setQuestion] = useState("");
+  const [file, setFile] = useState(null);
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      setFile(selectedFile);
+      setError("");
+    }
+  };
 
   const askQuestion = async () => {
     const cleanedQuestion = question.trim();
@@ -23,11 +33,9 @@ function App() {
     try {
       const response = await fetch("http://localhost:8000/ask", {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           question: cleanedQuestion,
         }),
@@ -44,7 +52,7 @@ function App() {
       console.error(err);
 
       setError(
-        "Unable to connect to the backend. Check whether the FastAPI container is running."
+        "Unable to connect to the backend. Check whether FastAPI is running."
       );
     } finally {
       setLoading(false);
@@ -54,32 +62,90 @@ function App() {
   return (
     <main className="page">
       <section className="card">
-        <h1>Ask My Notes</h1>
 
-        <p>Enter a question and send it to the FastAPI backend.</p>
+        <header className="header">
+          <h1>AskMyNotes AI</h1>
+          <p>Upload your notes and ask questions from them.</p>
+        </header>
 
-        <label htmlFor="question">Your question</label>
+        <div className="divider"></div>
 
-        <textarea
-          id="question"
-          value={question}
-          onChange={(event) => setQuestion(event.target.value)}
-          placeholder="For example: What is Docker?"
-          rows="5"
-        />
+        <section className="section">
+          <h2>Upload Notes</h2>
 
-        <button onClick={askQuestion} disabled={loading}>
-          {loading ? "Sending..." : "Ask Question"}
-        </button>
+          <label className="input-label">
+            Choose your notes file:
+          </label>
 
-        {error && <div className="error">{error}</div>}
+          <div className="file-upload">
+            <input
+              id="notes-file"
+              type="file"
+              onChange={handleFileChange}
+            />
 
-        {answer && (
-          <div className="answer">
-            <h2>Backend response</h2>
-            <p>{answer}</p>
+            <label
+              htmlFor="notes-file"
+              className="choose-file"
+            >
+              Choose file
+            </label>
+
+            <span className="file-name">
+              {file ? file.name : "No file chosen"}
+            </span>
           </div>
-        )}
+
+          <p className="upload-status">
+            {file ? `Uploaded: ${file.name}` : "No file uploaded"}
+          </p>
+        </section>
+
+        <div className="divider"></div>
+
+        <section className="section">
+          <h2>Ask a Question</h2>
+
+          <label className="input-label" htmlFor="question">
+            Enter your question:
+          </label>
+
+          <textarea
+            id="question"
+            value={question}
+            onChange={(event) => setQuestion(event.target.value)}
+            placeholder="Ask anything from your notes..."
+          />
+
+          <button
+            className="ask-button"
+            onClick={askQuestion}
+            disabled={loading}
+          >
+            {loading ? "Asking..." : "Ask My Notes"}
+          </button>
+
+          {error && (
+            <div className="error">
+              {error}
+            </div>
+          )}
+        </section>
+
+        <div className="divider"></div>
+
+        <section className="answer-section">
+          <h2>Answer</h2>
+
+          <div className="answer-content">
+            {answer && <p>{answer}</p>}
+          </div>
+        </section>
+
+        <footer className="footer">
+          AskMyNotes AI Capstone Project
+        </footer>
+
       </section>
     </main>
   );
