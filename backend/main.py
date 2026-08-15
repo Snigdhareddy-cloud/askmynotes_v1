@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(
@@ -16,7 +17,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
+        "https://askmynotes-v1-1re7.onrender.com/",
         "http://127.0.0.1:5173",
     ],
     allow_credentials=True,
