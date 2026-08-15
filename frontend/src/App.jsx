@@ -31,19 +31,18 @@ function App() {
     setAnswer("");
 
     try {
-<<<<<<< HEAD
-      const response = await fetch("https://askmynotes-v1-backend.onrender.com", {
-=======
-      const response = await fetch("https://askmynotes-v1-vgeu.onrender.com/ask", {
->>>>>>> 7c5014b4ee9e8bd11022a14f684314b65ef06c66
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question: cleanedQuestion,
-        }),
-      });
+      const response = await fetch(
+        "https://askmynotes-v1-backend.onrender.com/ask",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            question: cleanedQuestion,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Backend returned status ${response.status}`);
@@ -56,7 +55,7 @@ function App() {
       console.error(err);
 
       setError(
-        "Unable to connect to the backend. Check whether FastAPI is running."
+        "Unable to connect to the backend. Please try again."
       );
     } finally {
       setLoading(false);
@@ -110,7 +109,10 @@ function App() {
         <section className="section">
           <h2>Ask a Question</h2>
 
-          <label className="input-label" htmlFor="question">
+          <label
+            className="input-label"
+            htmlFor="question"
+          >
             Enter your question:
           </label>
 
